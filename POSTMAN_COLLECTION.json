@@ -1,0 +1,581 @@
+{
+  "info": {
+    "name": "EduLink - School Education & Digital Learning Management",
+    "description": "Complete API collection for EduLink microservices. Updated with email-based user IDs, role-specific table reconciliation, and school registration (SCH001).",
+    "_postman_id": "edulink-collection-v2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "identity_url", "value": "http://localhost:8081"},
+    {"key": "student_url", "value": "http://localhost:8082"},
+    {"key": "course_url", "value": "http://localhost:8083"},
+    {"key": "exam_url", "value": "http://localhost:8084"},
+    {"key": "attendance_url", "value": "http://localhost:8085"},
+    {"key": "compliance_url", "value": "http://localhost:8086"},
+    {"key": "notification_url", "value": "http://localhost:8087"},
+    {"key": "token", "value": ""}
+  ],
+  "item": [
+    {
+      "name": "1. Authentication (Identity Service :8081)",
+      "description": "Login endpoints for all roles with updated passwords and email-based authentication",
+      "item": [
+        {
+          "name": "Login - Operator",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{identity_url}}/auth/login",
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"operator@edulink.com\",\n  \"password\": \"Operator@123\"\n}"}
+          }
+        },
+        {
+          "name": "Login - School Admin",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{identity_url}}/auth/login",
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"admin@greenwood.edu\",\n  \"password\": \"Admin@1234\"\n}"}
+          }
+        },
+        {
+          "name": "Login - Teacher",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{identity_url}}/auth/login",
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"teacher@greenwood.edu\",\n  \"password\": \"Teacher@123\"\n}"}
+          }
+        },
+        {
+          "name": "Login - Student",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{identity_url}}/auth/login",
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"student@greenwood.edu\",\n  \"password\": \"Student@123\"\n}"}
+          }
+        },
+        {
+          "name": "Login - Board Officer",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{identity_url}}/auth/login",
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"boardofficer@edulink.com\",\n  \"password\": \"Board@1234\"\n}"}
+          }
+        },
+        {
+          "name": "Login - Compliance Officer",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{identity_url}}/auth/login",
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"compliance@edulink.com\",\n  \"password\": \"Comply@1234\"\n}"}
+          }
+        },
+        {
+          "name": "Login - Regulator",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{identity_url}}/auth/login",
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"regulator@edulink.com\",\n  \"password\": \"Regul@1234\"\n}"}
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{identity_url}}/auth/change-password",
+            "body": {"mode": "raw", "raw": "{\n  \"currentPassword\": \"Student@123\",\n  \"newPassword\": \"NewPass@456\",\n  \"confirmPassword\": \"NewPass@456\"\n}"}
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{identity_url}}/auth/refresh-token",
+            "body": {"mode": "raw", "raw": "{\n  \"refreshToken\": \"YOUR_REFRESH_TOKEN_HERE\"\n}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Operator APIs (Identity Service :8081)",
+      "description": "System administrator operations for creating compliance officers, board officers, and regulators",
+      "item": [
+        {
+          "name": "Create Compliance Officer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{identity_url}}/operator/create-compliance-officer",
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"newcompliance@edulink.com\",\n  \"fullName\": \"David Lee\"\n}"}
+          }
+        },
+        {
+          "name": "Create Board Officer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{identity_url}}/operator/create-board-officer",
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"newboard@edulink.com\",\n  \"fullName\": \"Dr. Patricia Moore\"\n}"}
+          }
+        },
+        {
+          "name": "Create Regulator",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{identity_url}}/operator/create-regulator",
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"newregulator@edulink.com\",\n  \"fullName\": \"Richard Clark\"\n}"}
+          }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{identity_url}}/operator/users"
+          }
+        },
+        {
+          "name": "Role Table Status (Diagnostic)",
+          "description": "Check initialization status of role-specific tables (board_officers, compliance_officers, regulators, etc.)",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{identity_url}}/operator/role-status"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. School Admin APIs (Identity + Course :8081/:8083)",
+      "description": "School administration operations for managing teachers, students, courses, and resources",
+      "item": [
+        {
+          "name": "Create Teacher Account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{identity_url}}/admin/create-teacher",
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"newteacher@greenwood.edu\",\n  \"fullName\": \"Ms. Jennifer Adams\",\n  \"schoolId\": \"SCH001\"\n}"}
+          }
+        },
+        {
+          "name": "Create Student Account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{identity_url}}/admin/create-student",
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"newstudent@greenwood.edu\",\n  \"fullName\": \"Bob Johnson\",\n  \"schoolId\": \"SCH001\"\n}"}
+          }
+        },
+        {
+          "name": "Get All Teachers",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{identity_url}}/admin/teachers"
+          }
+        },
+        {
+          "name": "Get All Students",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{identity_url}}/admin/students"
+          }
+        },
+        {
+          "name": "Create Course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{course_url}}/admin/create-course",
+            "body": {"mode": "raw", "raw": "{\n  \"courseCode\": \"CHEM101\",\n  \"courseName\": \"Chemistry Grade 10\",\n  \"description\": \"Basic Chemistry and Lab\",\n  \"schoolId\": \"SCH001\",\n  \"teacherId\": 6,\n  \"subject\": \"Chemistry\",\n  \"grade\": \"Grade 10\"\n}"}
+          }
+        },
+        {
+          "name": "Create Class",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{course_url}}/admin/create-class",
+            "body": {"mode": "raw", "raw": "{\n  \"className\": \"10B Chemistry\",\n  \"grade\": \"Grade 10\",\n  \"section\": \"B\",\n  \"schoolId\": \"SCH001\",\n  \"teacherEmail\": \"teacher@school.com\",\n  \"courseId\": 1,\n  \"capacity\": 35\n}"}
+          }
+        },
+        {
+          "name": "Attendance Report",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{attendance_url}}/admin/attendance-report?schoolId=SCH001", "host": ["{{attendance_url}}"], "path": ["admin","attendance-report"], "query": [{"key": "schoolId", "value": "SCH001"}]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Teacher APIs (Course Service :8083)",
+      "description": "Teacher operations for managing classes, materials, assignments, exams, grades, and attendance",
+      "item": [
+        {
+          "name": "Get My Classes",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{course_url}}/teacher/classes"
+          }
+        },
+        {
+          "name": "Upload Learning Material",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{course_url}}/teacher/upload-material",
+            "body": {"mode": "raw", "raw": "{\n  \"courseCode\": \"MATH101\",\n  \"title\": \"Chapter 2: Quadratic Equations\",\n  \"description\": \"Solving quadratic equations using different methods\",\n  \"fileUrl\": \"https://edu.materials/math101/ch2.pdf\",\n  \"materialType\": \"PDF\"\n}"}
+          }
+        },
+        {
+          "name": "Create Assignment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{course_url}}/teacher/create-assignment",
+            "body": {"mode": "raw", "raw": "{\n  \"courseCode\": \"MATH101\",\n  \"title\": \"Chapter 2 Practice Problems\",\n  \"description\": \"Complete problems 1-15 from the worksheet\",\n  \"dueDate\": \"2024-03-15T23:59:59\",\n  \"maxMarks\": 15\n}"}
+          }
+        },
+        {
+          "name": "Create Exam",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{exam_url}}/teacher/create-exam",
+            "body": {"mode": "raw", "raw": "{\n  \"courseCode\": \"MATH101\",\n  \"examTitle\": \"Final Term Mathematics\",\n  \"examType\": \"FINAL_TERM\",\n  \"totalMarks\": 100,\n  \"passingMarks\": 35,\n  \"schoolId\": \"SCH001\"\n}"}
+          }
+        },
+        {
+          "name": "Grade Student (via ExamService)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{exam_url}}/teacher/grade-student",
+            "body": {"mode": "raw", "raw": "{\n  \"examId\": \"MATH101\",\n  \"studentId\": 1,\n  \"marksObtained\": 78,\n  \"totalMarks\": 100,\n  \"grade\": \"B\",\n  \"remarks\": \"Good understanding of concepts\"\n}"}
+          }
+        },
+        {
+          "name": "Mark Attendance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{attendance_url}}/teacher/mark-attendance",
+            "body": {"mode": "raw", "raw": "{\n  \"studentId\": 1,\n  \"courseId\": 1,\n  \"schoolId\": \"SCH001\",\n  \"attendanceDate\": \"2025-03-08\",\n  \"status\": \"PRESENT\"\n}"}
+          }
+        },
+        {
+          "name": "Get Students in Class",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{course_url}}/teacher/students/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Student APIs (Student Service :8082)",
+      "description": "Student operations for viewing courses, materials, grades, assignments, and attendance",
+      "item": [
+        {
+          "name": "Get Enrolled Courses",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{student_url}}/student/courses"
+          }
+        },
+        {
+          "name": "Enroll in Course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{student_url}}/student/enroll",
+            "body": {"mode": "raw", "raw": "{\n  \"courseCode\": \"MATH101\"\n}"}
+          }
+        },
+        {
+          "name": "Get Learning Materials",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{student_url}}/student/materials/MATH101"
+          }
+        },
+        {
+          "name": "Get Assignments for Course",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{student_url}}/student/assignments/MATH101"
+          }
+        },
+        {
+          "name": "Submit Assignment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{student_url}}/student/assignments/upload",
+            "body": {"mode": "raw", "raw": "{\n  \"assignmentId\": 1,\n  \"assignmentTitle\": \"Algebra Assignment 1\",\n  \"submissionContent\": \"My solutions to all 20 problems\",\n  \"fileUrl\": \"https://submissions.edu/alice/math-assign1.pdf\"\n}"}
+          }
+        },
+        {
+          "name": "View Grades",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{student_url}}/student/grades"
+          }
+        },
+        {
+          "name": "View Attendance",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{student_url}}/student/attendance?studentId=7", "host": ["{{student_url}}"], "path": ["student", "attendance"], "query": [{"key": "studentId", "value": "7"}]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Compliance Officer APIs (Compliance Service :8086)",
+      "description": "Compliance operations for audits, school admin creation, and compliance status tracking",
+      "item": [
+        {
+          "name": "Create School Admin (via Compliance)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{identity_url}}/compliance/identity/create-school-admin",
+            "body": {"mode": "raw", "raw": "{\n  \"email\": \"admin@sunriseacademy.edu\",\n  \"fullName\": \"Principal Williams\",\n  \"schoolId\": \"SCH002\"\n}"}
+          }
+        },
+        {
+          "name": "Audit School",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{compliance_url}}/compliance/audit-school",
+            "body": {"mode": "raw", "raw": "{\n  \"schoolId\": \"SCH001\",\n  \"auditType\": \"QUARTERLY_REVIEW\",\n  \"findings\": \"All teaching standards met. Library resources updated. Role-based data fully reconciled.\",\n  \"recommendations\": \"Consider digital lab equipment upgrade.\",\n  \"status\": \"COMPLIANT\"\n}"}
+          }
+        },
+        {
+          "name": "Get Compliance Status",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{compliance_url}}/compliance/compliance-status"
+          }
+        },
+        {
+          "name": "Get Audit Records",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{compliance_url}}/compliance/audit-records"
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Education Board Officer APIs (Compliance Service :8086)",
+      "description": "Board officer operations for system-wide oversight, performance analysis, and reporting",
+      "item": [
+        {
+          "name": "Get All Schools",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{compliance_url}}/board/schools"
+          }
+        },
+        {
+          "name": "Academic Performance",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{compliance_url}}/board/academic-performance"
+          }
+        },
+        {
+          "name": "Get Reports",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{compliance_url}}/board/reports"
+          }
+        },
+        {
+          "name": "Compliance Summary",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{compliance_url}}/board/compliance-summary"
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Regulator APIs (Compliance Service :8086)",
+      "description": "National regulatory oversight for accreditation, system audits, and compliance verification",
+      "item": [
+        {
+          "name": "Get Compliance Reports",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{compliance_url}}/regulator/compliance-reports"
+          }
+        },
+        {
+          "name": "Accreditation Status",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{compliance_url}}/regulator/accreditation-status"
+          }
+        },
+        {
+          "name": "System Audit",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{compliance_url}}/regulator/system-audit"
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Notification Service (:8087)",
+      "description": "Notification management for alerts, reminders, and system communications (role-restricted)",
+      "item": [
+        {
+          "name": "Send Notification (Operator/Compliance only)",
+          "description": "Send notifications to users. Restricted to OPERATOR and COMPLIANCE_OFFICER roles.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{notification_url}}/notifications/send",
+            "body": {"mode": "raw", "raw": "{\n  \"recipientId\": \"student@greenwood.edu\",\n  \"recipientEmail\": \"student@greenwood.edu\",\n  \"recipientRole\": \"STUDENT\",\n  \"title\": \"Assignment Due Tomorrow\",\n  \"message\": \"Reminder: Algebra Assignment 1 is due tomorrow at 11:59 PM\",\n  \"type\": \"ALERT\"\n}"}
+          }
+        },
+        {
+          "name": "My Notifications",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{notification_url}}/notifications/my"
+          }
+        },
+        {
+          "name": "Mark Notification Read",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{notification_url}}/notifications/1/read"
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. System Health & Diagnostics",
+      "description": "Diagnostic endpoints for monitoring system initialization and data integrity",
+      "item": [
+        {
+          "name": "School Status (SCH001)",
+          "description": "Verify Greenwood High School (SCH001) is registered in system",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{identity_url}}/admin/school/SCH001"
+          }
+        },
+        {
+          "name": "Role Table Status",
+          "description": "Check that all role-specific tables have data (board_officers, compliance_officers, regulators, school_admins, teachers, students)",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{identity_url}}/operator/role-status"
+          }
+        },
+        {
+          "name": "All Users by Role",
+          "description": "List all users filtered by role (useful for verifying initialization)",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{identity_url}}/operator/users?role=EDUCATION_BOARD_OFFICER", "host": ["{{identity_url}}"], "path": ["operator", "users"], "query": [{"key": "role", "value": "EDUCATION_BOARD_OFFICER"}]}
+          }
+        }
+      ]
+    }
+  ]
+}

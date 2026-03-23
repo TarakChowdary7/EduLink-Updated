@@ -1,0 +1,14 @@
+com\edulink\complianceservice\controller\BoardController.class
+com\edulink\complianceservice\controller\ComplianceController.class
+com\edulink\complianceservice\dto\CreateSchoolRequest.class
+com\edulink\complianceservice\config\DataInitializer.class
+com\edulink\complianceservice\config\SecurityConfig.class
+com\edulink\complianceservice\service\SchoolService.class
+com\edulink\complianceservice\ComplianceServiceApplication.class
+com\edulink\complianceservice\security\JwtAuthFilter.class
+com\edulink\complianceservice\repository\SchoolRepository.class
+com\edulink\complianceservice\entity\ComplianceRecord.class
+com\edulink\complianceservice\dto\ApiResponse.class
+com\edulink\complianceservice\entity\School.class
+com\edulink\complianceservice\repository\ComplianceRecordRepository.class
+com\edulink\complianceservice\controller\RegulatorController.class
